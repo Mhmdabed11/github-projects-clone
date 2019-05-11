@@ -5,20 +5,20 @@ const ADD_COLUMN = "ADD_COLUMN";
 const uuidv4 = require("uuid/v4");
 export default function reducer(
   state = {
-    todos: {},
+    todos: { "todo-1": { id: "todo-1", content: "my name is mohammad abed" } },
     columns: {
-      "643a345b-c886-4a1f-9f30-a984558e0edc": {
-        id: "643a345b-c886-4a1f-9f30-a984558e0edc",
-        todosIds: []
+      "column-1": {
+        id: "column-1",
+        todosIds: ["todo-1"]
       }
     },
-    columnOrder: ["643a345b-c886-4a1f-9f30-a984558e0edc"]
+    columnOrder: ["column-1"]
   },
   action
 ) {
   switch (action.type) {
     case ADD_TODO:
-      console.log(action.payload);
+      if (!action.payload.task) return state;
       const uid = uuidv4();
       const task = { id: uid, content: action.payload.task };
       return {
@@ -33,32 +33,49 @@ export default function reducer(
         }
       };
     case MOVE_TODO:
-      const { source, destination, draggableId } = action.payload;
-      console.log(action.payload);
-      if (!destination) return;
+      const { source, destination, draggableId, type } = action.payload;
+
+      if (type === "column") {
+        if (!destination) {
+          return state;
+        }
+        if (
+          source.index === destination.index &&
+          source.droppableId === destination.droppableId
+        ) {
+          return state;
+        }
+        const newColumnOrder = Array.from(state.columnOrder);
+        newColumnOrder.splice(source.index, 1);
+        newColumnOrder.splice(destination.index, 0, draggableId);
+
+        const newState = { ...state, columnOrder: newColumnOrder };
+        return newState;
+      }
+      if (!destination) return state;
       if (
         source.index === destination.index &&
         source.droppableId === destination.droppableId
       ) {
-        return;
+        return state;
       }
       if (source.droppableId === destination.droppableId) {
-        const column = state.columns[source.droppableId];
-        const newTodosIds = Array.from(column.todosIds);
+        const column = state.columns[destination.droppableId];
+        const newTodos = Array.from(column.todosIds);
 
-        newTodosIds.splice(source.index, 1);
-        newTodosIds.splice(destination.index, 0, draggableId);
+        newTodos.splice(source.index, 1);
+        newTodos.splice(destination.index, 0, draggableId);
 
         const newColumn = {
           ...column,
-          todosIds: newTodosIds
+          todosIds: newTodos
         };
 
         const newState = {
           ...state,
           columns: {
             ...state.columns,
-            [newColumn.id]: newColumn
+            [column.id]: newColumn
           }
         };
 
@@ -73,11 +90,10 @@ export default function reducer(
         newSourceTodos.splice(source.index, 1);
         newDestinationTodos.splice(destination.index, 0, draggableId);
 
-        const newSourceColumn = {
+        const newSrouceColumn = {
           ...sourceColumn,
           todosIds: newSourceTodos
         };
-
         const newDestinationColumn = {
           ...destinationColumn,
           todosIds: newDestinationTodos
@@ -87,10 +103,11 @@ export default function reducer(
           ...state,
           columns: {
             ...state.columns,
-            [newSourceColumn.id]: newSourceColumn,
-            [newDestinationColumn.id]: newDestinationColumn
+            [sourceColumn.id]: newSrouceColumn,
+            [destinationColumn.id]: newDestinationColumn
           }
         };
+
         return newState;
       } else return state;
     case DELETE_TODO:
