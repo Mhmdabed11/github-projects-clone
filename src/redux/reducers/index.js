@@ -5,15 +5,9 @@ const ADD_COLUMN = "ADD_COLUMN";
 const uuidv4 = require("uuid/v4");
 export default function reducer(
   state = {
-    todos: { "todo-1": { id: "todo-1", content: "my name is mohammad abed" } },
-    columns: {
-      "column-1": {
-        id: "column-1",
-        title: "To do",
-        todosIds: ["todo-1"]
-      }
-    },
-    columnOrder: ["column-1"]
+    todos: {},
+    columns: {},
+    columnOrder: []
   },
   action
 ) {
@@ -29,7 +23,7 @@ export default function reducer(
           ...state.columns,
           [action.payload.columnId]: {
             ...state.columns[action.payload.columnId],
-            todosIds: [...state.columns[action.payload.columnId].todosIds, uid]
+            todosIds: [uid, ...state.columns[action.payload.columnId].todosIds]
           }
         }
       };
