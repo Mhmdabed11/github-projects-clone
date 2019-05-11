@@ -24,8 +24,9 @@ export const deleteTodo = payload => {
   };
 };
 
-export const addColumn = () => {
+export const addColumn = title => {
   return {
-    type: ADD_COLUMN
+    type: ADD_COLUMN,
+    payload: title
   };
 };

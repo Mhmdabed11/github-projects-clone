@@ -52,7 +52,7 @@ const Column = props => {
           <ColumnHeader>
             <TodoInfo>
               <TodosCount>{props.todos.length}</TodosCount>
-              <TodoTitle>To do</TodoTitle>
+              <TodoTitle>{props.column.title}</TodoTitle>
             </TodoInfo>
             <ActionsWrapper>
               <AddTodo onClick={showNewIssueForm}>+</AddTodo>

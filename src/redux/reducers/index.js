@@ -9,6 +9,7 @@ export default function reducer(
     columns: {
       "column-1": {
         id: "column-1",
+        title: "To do",
         todosIds: ["todo-1"]
       }
     },
@@ -120,6 +121,7 @@ export default function reducer(
           ...state.columns,
           [colUid]: {
             id: colUid,
+            title: action.payload,
             todosIds: []
           }
         },

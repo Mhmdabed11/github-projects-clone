@@ -17,8 +17,7 @@ export const TodoTitle = styled.div`
 `;
 
 export const RepoName = styled.small`
-  color: #586069!;
-  opacity: 0.7;
+  color: rgba(#586069, 0.7);
   display: block;
 `;
 
