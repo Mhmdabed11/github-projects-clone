@@ -18,8 +18,8 @@ const Todo = props => {
           ref={provided.innerRef}
         >
           <TodoTitle>{props.todo.content}</TodoTitle>
-          <RepoName>Fellow-tenant-web-user #21 opened by</RepoName>
-          <IssueOwner>MhmdAbed11</IssueOwner>
+          <RepoName>Github repo issue #21 opened by</RepoName>
+          <IssueOwner>ipsum</IssueOwner>
           <IssueLabels>
             <IssueLabel>enhancement</IssueLabel>
             <IssueLabel>front-end</IssueLabel>
